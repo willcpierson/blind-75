@@ -15,16 +15,31 @@
 // Output: [[1,2],[3,10],[12,16]]
 // Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
 
-const insert = function(intervals, newInterval) {
-    
-    for (let i = 0; i < intervals.length; i++) {
-        if (intervals[0][1] >= newInterval[0][0]) {
-            
-        }
-    }
+const insert = function (intervals, newInterval) {
+    let count = 0;
+    let startIndex;
+    let morphedInterval = []
 
-    return intervals
+    for (let i = 0; i < intervals.length; i++) {
+        if (!startIndex && newInterval[0] >= intervals[i][0] && newInterval[0] <= intervals[i][1]) {
+            startIndex = i;
+            count += 1;
+            morphedInterval[0] = intervals[i];
+        } else if (startIndex && !(newInterval[1] < intervals[i][1])) {
+            count += 1;
+        } else if (startIndex && newInterval[1] < intervals[i][1]) {
+            count += 1;
+            morphedInterval[1] = intervals[i][1];
+            intervals.splice(startIndex, count, morphedInterval);
+            console.log(intervals);
+            return intervals;
+        };
+    };
+
+    intervals.splice(intervals.length, 0, newInterval);
+    console.log(intervals);
+    return intervals;
 };
 
-insert([[1,3], [6,9]],[2,5]);
-insert([[1,2],[3,5],[6,7],[8,10],[12,16]],[4,8]);
+insert([[1, 3], [6, 9]], [2, 5]);
+insert([[1, 2], [3, 5], [6, 7], [8, 10], [12, 16]], [4, 8]);
